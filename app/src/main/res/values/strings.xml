@@ -2,6 +2,9 @@
     <string name="app_name">DLBPInfo5126Project</string>
     <string name="project_name">NY Times Article Central</string>
     <string name="search">Search</string>
+    <string name="keyword">Keyword</string>
+    <string name="keywordRe">Getting Results for: </string>
+    <string name="noResults">No Results Found</string>
     <string name="creditsAct">Go to Description and Credits</string>
     <string name="credits">Credits</string>
     <string name="homeAct">Return to Home</string>
