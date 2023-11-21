@@ -6,12 +6,12 @@ data class APIFormat (
 )
 
 data class Response (
-    var articles:List<Docs>
+    var docs:List<Docs>
 )
 
 data class Docs(
     var headline:Headline,
-    var author:Byline,
+    var byline:Byline,
     var pub_date:String,
     var web_url:String,
 )

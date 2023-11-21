@@ -31,7 +31,7 @@ class RecyclerAdaptor(private val dataSet: List<Docs>) :
             .inflate(R.layout.recycler_item_card_layout, viewGroup, false)
 
         val lp = view.layoutParams
-        lp.height = 256
+        lp.height = 450
         view.layoutParams = lp
 
         return ViewHolder(view)
@@ -39,15 +39,10 @@ class RecyclerAdaptor(private val dataSet: List<Docs>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        /*viewHolder.textViewHeadline.text = dataSet[position].headline.main
-        viewHolder.textViewAuthor.text = dataSet[position].author.original
+        viewHolder.textViewHeadline.text = dataSet[position].headline.main
+        viewHolder.textViewAuthor.text = dataSet[position].byline.original
         viewHolder.textViewPubDate.text = dataSet[position].pub_date
-        viewHolder.textViewWebURL.text = dataSet[position].web_url*/
-
-        viewHolder.textViewHeadline.text = "dataSet[position].headline.main"
-        viewHolder.textViewAuthor.text = "dataSet[position].author.original"
-        viewHolder.textViewPubDate.text = "dataSet[position].pub_date"
-        viewHolder.textViewWebURL.text = "dataSet[position].web_url"
+        viewHolder.textViewWebURL.text = dataSet[position].web_url
     }
 
     // Return the size of your dataset (invoked by the layout manager)

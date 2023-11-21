@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     fun onSearchButtonClick(view: View) {
         keyword = binding.editTextKeyword.text.toString()
-        binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
         CoroutineScope(Dispatchers.Main).launch {
             val request = getArticleSearchDataFromCoroutine(keyword)
             println(request)
@@ -40,8 +39,7 @@ class MainActivity : AppCompatActivity() {
             {
                 // update the ui
                 binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
-                //Currently Breaks Here
-                //binding.recyclerView.adapter = RecyclerAdaptor(request.response.articles)
+                binding.recyclerView.adapter = RecyclerAdaptor(request.response.docs)
             }
             else
             {
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     private suspend fun getArticleSearchDataFromCoroutine(keywordSel:String):APIFormat? {
         val defer = CoroutineScope(Dispatchers.IO).async {
             val url =
-                URL("https://api.nytimes.com/svc/search/v2/articlesearch.json?q=&api-key=XzLQ6bzoAMZmb06CtY1bBoaYi02VHVgD")
+                URL("https://api.nytimes.com/svc/search/v2/articlesearch.json?q=$keywordSel&api-key=XzLQ6bzoAMZmb06CtY1bBoaYi02VHVgD")
             val connection = url.openConnection() as HttpsURLConnection
             if(connection.responseCode == 200)
             {
