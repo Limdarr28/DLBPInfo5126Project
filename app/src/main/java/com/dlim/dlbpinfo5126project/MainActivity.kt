@@ -54,6 +54,16 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun onAddButtonClick(view: View) {
+        val intent = Intent(this,CreditsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onReadButtonClick(view: View) {
+        val intent = Intent(this,CreditsActivity::class.java)
+        startActivity(intent)
+    }
+
     private suspend fun getArticleSearchDataFromCoroutine(keywordSel:String):APIFormat? {
         val defer = CoroutineScope(Dispatchers.IO).async {
             val url =
