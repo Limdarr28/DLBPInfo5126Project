@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     articles.add(Article(request.response.docs[index].headline.main,
                         request.response.docs[index].byline.original, output,
                         request.response.docs[index].abstract,
-                        request.response.docs[index].web_url))
+                        request.response.docs[index].web_url, keyword))
 
                     index++
                 }
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateViewModel() {
         viewModel.updateArticle(articles[index].headline,articles[index].byline,
-            articles[index].pub_date, articles[index].abstract, articles[index].web_url)
+            articles[index].pub_date, articles[index].abstract, articles[index].web_url, keyword)
 
         val articleObserver = Observer<Article> {
                 article ->

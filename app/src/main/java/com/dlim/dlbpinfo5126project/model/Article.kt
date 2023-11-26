@@ -5,5 +5,6 @@ data class Article(
     var byline:String?,
     var pub_date:String?,
     var abstract:String?,
-    var web_url:String?
+    var web_url:String?,
+    var keyword:String?
 )

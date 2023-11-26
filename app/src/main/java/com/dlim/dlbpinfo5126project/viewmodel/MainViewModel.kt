@@ -15,7 +15,7 @@ class MainViewModel : ViewModel() {
         println("viewModel init")
     }
 
-    fun updateArticle(headlineA: String?, bylineA:String?, pub_dateA:String?, abstractA:String?, web_urlA:String?){
+    fun updateArticle(headlineA: String?, bylineA:String?, pub_dateA:String?, abstractA:String?, web_urlA:String?, keywordA:String){
         if (headlineA.isNullOrBlank()) {
             mHeadline = "N/A"
         }
@@ -48,6 +48,6 @@ class MainViewModel : ViewModel() {
         }
 
 
-        mArticle.value = Article(mHeadline, mByline, mPubDate, mAbstract, mWebUrl)
+        mArticle.value = Article(mHeadline, mByline, mPubDate, mAbstract, mWebUrl, keywordA)
     }
 }
