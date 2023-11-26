@@ -13,7 +13,8 @@ data class Docs(
     var headline:Headline,
     var byline:Byline,
     var pub_date:String,
-    var web_url:String,
+    var abstract:String,
+    var web_url:String
 )
 
 data class Headline(

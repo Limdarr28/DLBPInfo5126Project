@@ -1,10 +1,14 @@
 package com.dlim.dlbpinfo5126project
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.dlim.dlbpinfo5126project.databinding.ActivityMainBinding
+import com.dlim.dlbpinfo5126project.model.Article
+import com.dlim.dlbpinfo5126project.viewmodel.MainViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,21 +17,30 @@ import kotlinx.coroutines.launch
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+
 class MainActivity : AppCompatActivity() {
-    private lateinit var recyclerViewManager: RecyclerView.LayoutManager
     private lateinit var binding: ActivityMainBinding
-    private var keyword: String = ""
+    private var keyword: String = "Chicken"
+    private var articles: List<Docs> = emptyList()
+    lateinit var viewModel:MainViewModel
+    private var index: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // setup recyclerView
-        recyclerViewManager = LinearLayoutManager(applicationContext)
-        binding.recyclerView.layoutManager = recyclerViewManager
-        binding.recyclerView.setHasFixedSize(true)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        val articleObserver = Observer<Article> {
+                newArticle ->
+            binding.textViewHeadLine.text = ""
+            binding.textViewAuthor.text = ""
+            binding.textViewPubDate.text = ""
+            binding.textViewAbstract.text = ""
+            binding.textViewWebURL.text = ""
+        }
+
+        viewModel.mArticle.observe(this, articleObserver)
     }
 
     fun onSearchButtonClick(view: View) {
@@ -39,7 +52,12 @@ class MainActivity : AppCompatActivity() {
             {
                 // update the ui
                 binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
-                binding.recyclerView.adapter = RecyclerAdaptor(request.response.docs)
+                articles = emptyList()
+                articles = request.response.docs
+
+                index = 0
+
+                updateViewModel()
             }
             else
             {
@@ -49,19 +67,49 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun onNextButtonClick(view: View) {
+        if (articles.size === 0) {
+
+        }
+        else {
+            if (index >= articles.size - 1) {
+                index = 0
+            }
+
+            updateViewModel()
+            index++
+        }
+    }
+
+    fun onBackButtonClick(view: View) {
+        if (articles.size === 0) {
+
+        }
+        else {
+            if (index <= 0) {
+                index = articles.size - 1
+            }
+
+            updateViewModel()
+            index--
+        }
+    }
     fun onCreditsButtonClick(view: View) {
         val intent = Intent(this,CreditsActivity::class.java)
         startActivity(intent)
     }
 
     fun onAddButtonClick(view: View) {
-        val intent = Intent(this,CreditsActivity::class.java)
-        startActivity(intent)
+
+
+        binding.textViewInfo.text = getString(R.string.addDataInfo)
     }
 
     fun onReadButtonClick(view: View) {
-        val intent = Intent(this,CreditsActivity::class.java)
-        startActivity(intent)
+        //articles = emptyList()
+
+        binding.textViewInfo.text = getString(R.string.readDataInfo1) + keyword +
+                getString(R.string.readDataInfo2)
     }
 
     private suspend fun getArticleSearchDataFromCoroutine(keywordSel:String):APIFormat? {
@@ -83,5 +131,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return defer.await()
+    }
+
+    private fun updateViewModel() {
+        viewModel.updateArticle(articles[index].headline.main,articles[index].byline.original,
+            articles[index].pub_date, articles[index].abstract, articles[index].web_url)
+
+        val articleObserver = Observer<Article> {
+                article ->
+            binding.textViewHeadLine.text = article.headline
+            binding.textViewAuthor.text = article.byline
+            binding.textViewPubDate.text = article.pub_date
+            binding.textViewAbstract.text = article.abstract
+            binding.textViewWebURL.text = article.web_url
+        }
+
+        viewModel.mArticle.observe(this, articleObserver)
     }
 }

@@ -3,8 +3,13 @@
     <string name="project_name">NY Times Article Central</string>
     <string name="search">Search</string>
     <string name="keyword">Keyword</string>
-    <string name="keywordRe">Getting Results for: </string>
+    <string name="keywordRe">Getting Top 10 Results for: </string>
     <string name="noResults">No Results Found</string>
+    <string name="addDataInfo">Adding Articles to Database</string>
+    <string name="readDataInfo1">Getting Articles of:\"</string>
+    <string name="readDataInfo2">\" From Database</string>
+    <string name="nextArticle">Next Article</string>
+    <string name="previousArticle">Previous Article</string>
     <string name="credits">Credits</string>
     <string name="add_data">Add Data</string>
     <string name="read_data">Read Data</string>
