@@ -109,16 +109,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onAddButtonClick(view: View) {
+        if (articles.isEmpty()) {
+            binding.textViewInfo.text = getString(R.string.emptyList)
+        }
+        else {
+            binding.textViewInfo.text = getString(R.string.addDataInfo)
 
-
-        binding.textViewInfo.text = getString(R.string.addDataInfo)
+        }
     }
 
     fun onReadButtonClick(view: View) {
-        //articles = emptyList<Article>().toMutableList()
+        if (articles.isEmpty()) {
+            binding.textViewInfo.text = getString(R.string.emptyDatabase)
+        }
+        else {
+            //articles = emptyList<Article>().toMutableList()
 
-        binding.textViewInfo.text = getString(R.string.readDataInfo1) + keyword +
-                getString(R.string.readDataInfo2)
+            binding.textViewInfo.text = getString(R.string.readDataInfo1) + keyword +
+                    getString(R.string.readDataInfo2)
+
+        }
     }
 
     private suspend fun getArticleSearchDataFromCoroutine(keywordSel:String):APIFormat? {

@@ -6,7 +6,9 @@
     <string name="keywordRe">Getting Top 10 Results for: </string>
     <string name="noResults">No Results Found</string>
     <string name="addDataInfo">Adding Articles to Database</string>
-    <string name="readDataInfo1">Getting Articles of:\"</string>
+    <string name="emptyList">No Data in List</string>
+    <string name="emptyDatabase">No Data in Database</string>
+    <string name="readDataInfo1">Getting Articles of: \"</string>
     <string name="readDataInfo2">\" From Database</string>
     <string name="nextArticle">Next Article</string>
     <string name="previousArticle">Previous Article</string>
