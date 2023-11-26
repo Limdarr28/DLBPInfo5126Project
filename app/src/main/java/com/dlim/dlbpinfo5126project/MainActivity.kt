@@ -68,10 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onNextButtonClick(view: View) {
-        if (articles.size === 0) {
-
-        }
-        else {
+        if (articles.isNotEmpty()) {
             if (index >= articles.size - 1) {
                 index = 0
             }
@@ -82,10 +79,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onBackButtonClick(view: View) {
-        if (articles.size === 0) {
-
-        }
-        else {
+        if (articles.isNotEmpty()) {
             if (index <= 0) {
                 index = articles.size - 1
             }
