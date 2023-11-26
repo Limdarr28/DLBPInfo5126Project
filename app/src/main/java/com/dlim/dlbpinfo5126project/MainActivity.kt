@@ -3,12 +3,14 @@ package com.dlim.dlbpinfo5126project
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dlim.dlbpinfo5126project.databinding.ActivityMainBinding
 import com.dlim.dlbpinfo5126project.model.Article
 import com.dlim.dlbpinfo5126project.viewmodel.MainViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +131,13 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.readDataInfo2)
 
         }
+    }
+
+    fun onLogoutButtonClick(view: View) {
+        FirebaseAuth.getInstance().signOut()
+        Toast.makeText(this,R.string.logged_out, Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this,LoginActivity::class.java))
+        finish()
     }
 
     private suspend fun getArticleSearchDataFromCoroutine(keywordSel:String):APIFormat? {

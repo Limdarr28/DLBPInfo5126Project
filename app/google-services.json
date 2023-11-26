@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "782119808618",
+    "project_id": "xenon-alliance-405722",
+    "storage_bucket": "xenon-alliance-405722.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782119808618:android:b331abfefa8f6fafca6413",
+        "android_client_info": {
+          "package_name": "com.dlim.dlbpinfo5126project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0qoJXzKG8OPuLzPTPOosyu63W4Akvf5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782119808618:android:e79bd074484ce8b6ca6413",
+        "android_client_info": {
+          "package_name": "com.lwong.firebaseauthfirestore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0qoJXzKG8OPuLzPTPOosyu63W4Akvf5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
