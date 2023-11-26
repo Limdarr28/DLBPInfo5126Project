@@ -3,6 +3,7 @@ package com.dlim.dlbpinfo5126project
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -10,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.dlim.dlbpinfo5126project.databinding.ActivityMainBinding
 import com.dlim.dlbpinfo5126project.model.Article
 import com.dlim.dlbpinfo5126project.viewmodel.MainViewModel
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +28,11 @@ import javax.net.ssl.HttpsURLConnection
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var keyword: String = "Chicken"
+    private var keyword: String = ""
     private var articles: MutableList<Article> = emptyList<Article>().toMutableList()
     lateinit var viewModel:MainViewModel
     private var index: Int = 0
+    val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -115,22 +119,80 @@ class MainActivity : AppCompatActivity() {
             binding.textViewInfo.text = getString(R.string.emptyList)
         }
         else {
-            binding.textViewInfo.text = getString(R.string.addDataInfo)
+            db.collection("articles")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
 
+                        db.collection("articles").document(document.id)
+                            .delete()
+                    }
+                    for (article in articles) {
+                        // Version 1 create or add to users collection
+                        db.collection("articles")
+                            .add(article)
+                            .addOnSuccessListener {
+                                binding.textViewInfo.text = getString(R.string.addDataInfo)
+                            }
+                            .addOnFailureListener {
+                                binding.textViewInfo.text = getString(R.string.addDataInfoFail)
+                            }
+                    }
+                }
         }
     }
 
     fun onReadButtonClick(view: View) {
-        if (articles.isEmpty()) {
-            binding.textViewInfo.text = getString(R.string.emptyDatabase)
-        }
-        else {
-            //articles = emptyList<Article>().toMutableList()
+        db.collection("articles")
+            .get()
+            .addOnSuccessListener { result ->
+                db.collection("articles")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        if (result.size() > 0) {
+                            articles = emptyList<Article>().toMutableList()
 
-            binding.textViewInfo.text = getString(R.string.readDataInfo1) + keyword +
-                    getString(R.string.readDataInfo2)
+                            for (document in result) {
+                                var headline: String = "headline"
+                                var byline: String = "byline"
+                                var date: String = "pub_date"
+                                var abstract: String = "abstract"
+                                var weburl: String = "web_url"
+                                var keywordK: String = "keyword"
 
-        }
+                                articles.add(
+                                    Article(
+                                        document.data.get(headline).toString(),
+                                        document.data.get(byline).toString(),
+                                        document.data.get(date).toString(),
+                                        document.data.get(abstract).toString(),
+                                        document.data.get(weburl).toString(),
+                                        document.data.get(keywordK).toString()
+                                    )
+                                )
+                                keyword = document.data.get(keywordK).toString()
+                            }
+
+                            index = 0
+
+                            binding.editTextKeyword.setText(keyword, TextView.BufferType.EDITABLE);
+                            binding.textViewInfo.text =
+                                getString(R.string.readDataInfo1) + keyword +
+                                        getString(R.string.readDataInfo2)
+                            updateViewModel()
+                        }
+                        else {
+                            binding.textViewInfo.text = getString(R.string.emptyDatabase)
+                        }
+                    }
+                            .addOnFailureListener { exception ->
+                                binding.textViewInfo.text = getString(R.string.readDataInfoFail)
+                            }
+
+                    }
+
+
+
     }
 
     fun onLogoutButtonClick(view: View) {
