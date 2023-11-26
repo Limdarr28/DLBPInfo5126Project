@@ -16,12 +16,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.InputStreamReader
 import java.net.URL
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.net.ssl.HttpsURLConnection
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var keyword: String = "Chicken"
-    private var articles: List<Docs> = emptyList()
+    private var articles: MutableList<Article> = emptyList<Article>().toMutableList()
     lateinit var viewModel:MainViewModel
     private var index: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +55,20 @@ class MainActivity : AppCompatActivity() {
             {
                 // update the ui
                 binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
-                articles = emptyList()
-                articles = request.response.docs
+                articles = emptyList<Article>().toMutableList()
+                index = 0
+                request.response.docs.forEach {
+                    var dateStartString = String.format("%19.19s", request.response.docs[index].pub_date)
+                    val localDateTime = LocalDateTime.parse(dateStartString)
+                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+                    val output = formatter.format(localDateTime)
+                    articles.add(Article(request.response.docs[index].headline.main,
+                        request.response.docs[index].byline.original, output,
+                        request.response.docs[index].abstract,
+                        request.response.docs[index].web_url))
+
+                    index++
+                }
 
                 index = 0
 
@@ -100,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onReadButtonClick(view: View) {
-        //articles = emptyList()
+        //articles = emptyList<Article>().toMutableList()
 
         binding.textViewInfo.text = getString(R.string.readDataInfo1) + keyword +
                 getString(R.string.readDataInfo2)
@@ -128,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateViewModel() {
-        viewModel.updateArticle(articles[index].headline.main,articles[index].byline.original,
+        viewModel.updateArticle(articles[index].headline,articles[index].byline,
             articles[index].pub_date, articles[index].abstract, articles[index].web_url)
 
         val articleObserver = Observer<Article> {
