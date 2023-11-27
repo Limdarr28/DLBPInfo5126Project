@@ -54,36 +54,43 @@ class MainActivity : AppCompatActivity() {
 
     fun onSearchButtonClick(view: View) {
         keyword = binding.editTextKeyword.text.toString()
-        CoroutineScope(Dispatchers.Main).launch {
-            val request = getArticleSearchDataFromCoroutine(keyword)
-            println(request)
-            if(request != null)
-            {
-                // update the ui
-                binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
-                articles = emptyList<Article>().toMutableList()
-                index = 0
-                request.response.docs.forEach {
-                    var dateStartString = String.format("%19.19s", request.response.docs[index].pub_date)
-                    val localDateTime = LocalDateTime.parse(dateStartString)
-                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-                    val output = formatter.format(localDateTime)
-                    articles.add(Article(request.response.docs[index].headline.main,
-                        request.response.docs[index].byline.original, output,
-                        request.response.docs[index].abstract,
-                        request.response.docs[index].web_url, keyword))
+        if (!keyword.isNullOrBlank()) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val request = getArticleSearchDataFromCoroutine(keyword)
+                println(request)
+                if (request != null) {
+                    // update the ui
+                    binding.textViewInfo.text = "${getString(R.string.keywordRe)} ${keyword}"
+                    articles = emptyList<Article>().toMutableList()
+                    index = 0
+                    request.response.docs.forEach {
+                        var dateStartString =
+                            String.format("%19.19s", request.response.docs[index].pub_date)
+                        val localDateTime = LocalDateTime.parse(dateStartString)
+                        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+                        val output = formatter.format(localDateTime)
+                        articles.add(
+                            Article(
+                                request.response.docs[index].headline.main,
+                                request.response.docs[index].byline.original, output,
+                                request.response.docs[index].abstract,
+                                request.response.docs[index].web_url, keyword
+                            )
+                        )
 
-                    index++
+                        index++
+                    }
+
+                    index = 0
+
+                    updateViewModel()
+                } else {
+                    binding.textViewInfo.text = getString(R.string.noResults)
                 }
-
-                index = 0
-
-                updateViewModel()
             }
-            else
-            {
-                binding.textViewInfo.text = getString(R.string.noResults)
-            }
+        }
+        else {
+            binding.textViewInfo.text = getString(R.string.noKeyword)
         }
 
     }

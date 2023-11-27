@@ -18,6 +18,7 @@
     <string name="project_name">NY Times Article Central</string>
     <string name="search">Search</string>
     <string name="keyword">Keyword</string>
+    <string name="noKeyword">No Keyword for Input</string>
     <string name="keywordRe">Getting Top 10 Results for: </string>
     <string name="noResults">No Results Found</string>
     <string name="addDataInfo">Adding Articles to Database</string>
