@@ -135,6 +135,23 @@ class MainActivity : AppCompatActivity() {
                             .delete()
                     }
                     for (article in articles) {
+
+                        if (article.headline.isNullOrBlank()) {
+                            article.headline = "N/A"
+                        }
+                        if (article.byline.isNullOrBlank()) {
+                            article.byline = "N/A"
+                        }
+                        if (article.pub_date.isNullOrBlank()) {
+                            article.pub_date = "N/A"
+                        }
+                        if (article.abstract.isNullOrBlank()) {
+                            article.abstract = "N/A"
+                        }
+                        if (article.web_url.isNullOrBlank()) {
+                            article.web_url = "N/A"
+                        }
+
                         // Version 1 create or add to users collection
                         db.collection("articles")
                             .add(article)
